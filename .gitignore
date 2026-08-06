@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Env / secrets
+.env
+*.pem
+
+# Data / vector store (don't commit raw filings or embeddings)
+data/raw/
+data/processed/
+*.lance/
+*.db
+
+# Docker
+*.log
+
+# OS
+.DS_Store
