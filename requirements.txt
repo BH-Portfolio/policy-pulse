@@ -1,0 +1,8 @@
+# Ingestion API
+requests
+pydantic
+python-dotenv
+
+# Testing
+pytest
+responses
