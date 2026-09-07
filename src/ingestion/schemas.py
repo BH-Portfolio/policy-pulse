@@ -9,7 +9,7 @@ class Sector(str, Enum):
 class EnergyRateRecord(BaseModel):
 
     state: str
-    sector: str
+    sector: Sector
     period: str
     price_cents_per_kwh: float
     sales_million_kwh: float

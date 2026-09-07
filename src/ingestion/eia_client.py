@@ -5,20 +5,20 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class EIAClientErr(Exception):
+class EIAClientError(Exception):
     pass
 
 class EIAClient:
     """Class wrapping EIA API requests"""
 
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, delay: float = 0.5):
         self.base_url = "https://api.eia.gov/v2"
         self.api_key = api_key or os.environ.get("EIA_API_KEY")
         if not self.api_key:
-            raise EIAClientErr(
+            raise EIAClientError(
                 "No EIA API key found. Set EIA_API_KEY in your .env file"
             )
-        self.delay = 0.5
+        self.delay = delay
 
     def get_electricity_rates(self, state: str, start: str, end: str, sector: str = "RES", frequency: str = "monthly") -> list[dict]:
         """ Fetch retail electricity rates
@@ -39,7 +39,7 @@ class EIAClient:
             "start": start,
             "end": end,
             "sort[0][column]": "period",
-            "sort[0][column]": "desc",
+            "sort[0][direction]": "desc",
             "length": 5000,
         }
 
@@ -51,7 +51,7 @@ class EIAClient:
             response = requests.get(url, params=parameters, timeout=30)
 
             if response.status_code != 200:
-                raise EIAClientErr(
+                raise EIAClientError(
                     f"EIA API returned {response.status_code}: {response.text[:300]}"
                 )
 
