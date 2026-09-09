@@ -6,3 +6,7 @@ python-dotenv
 # Testing
 pytest
 responses
+
+# Storage
+psycopg2-binary
+sqlalchemy
