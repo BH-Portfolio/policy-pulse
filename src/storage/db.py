@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
+from src.storage.models import Base
 
 load_dotenv()
 
@@ -27,4 +28,9 @@ def get_session():
         raise
     finally:
         session.close()
-        
+
+
+if __name__ == "__main__":
+    Base.metadata.create_all(engine)
+    print("Tables created")
+    
