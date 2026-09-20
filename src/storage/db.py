@@ -1,7 +1,30 @@
+import os
+from contextlib import contextmanager
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 
-engine = create_engine("sqlite://", echo=True)
+load_dotenv()
 
-with Session(engine) as session:
-    
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL not set. Check .env file")
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(bind=engine)
+
+
+@contextmanager
+def get_session():
+    """Yield a SQLAlchemy session"""
+    session = SessionLocal()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+        
